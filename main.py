@@ -14,10 +14,16 @@ LINE = "Minted a free NFT, paid for it in sleep."
 
 
 def validate(line: str) -> None:
-    """Exit 2 if the line is empty/whitespace-only, over 100 chars, or
-    contains a carriage return / line feed."""
+    """Exit 2 if the line is empty/whitespace-only, over 100 chars,
+    contains a carriage return / line feed, or has leading or trailing
+    whitespace (it would pass the gate but waste characters and look
+    sloppy)."""
     if not line or not line.strip():
         print("error: line is empty or whitespace-only", file=sys.stderr)
+        sys.exit(2)
+    if line != line.strip():
+        print("error: line has leading or trailing whitespace",
+              file=sys.stderr)
         sys.exit(2)
     if len(line) > 100:
         print(f"error: line is {len(line)} characters, over the 100 limit",
